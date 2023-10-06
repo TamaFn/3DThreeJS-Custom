@@ -5,10 +5,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 let camera, mapControls, orbitControls, scene, renderer;
 
-// Tambahkan variabel untuk mengontrol gerakan maju dan mundur
+// Tambahkan variabel untuk mengontrol gerakan maju, mundur, ke kiri, ke kanan, naik, dan turun
 const moveState = {
     forward: false,
     backward: false,
+    left: false,
+    right: false,
+    up: false,
+    down: false,
 };
 
 init();
@@ -71,7 +75,7 @@ function init() {
 
     window.addEventListener('resize', onWindowResize);
 
-    // Tambahkan event listener untuk mengendalikan gerakan maju dan mundur
+    // Tambahkan event listener untuk mengendalikan gerakan maju, mundur, ke kiri, ke kanan, naik, dan turun
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
 
@@ -86,16 +90,32 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// Fungsi untuk mengendalikan gerakan maju dan mundur saat tombol ditekan
+// Fungsi untuk mengendalikan gerakan maju, mundur, ke kiri, ke kanan, naik, dan turun saat tombol ditekan
 function onKeyDown(event) {
     switch (event.key) {
-        case 'S':
-        case 's':
-            moveState.forward = true;
-            break;
         case 'W':
         case 'w':
+            moveState.forward = true;
+            break;
+        case 'S':
+        case 's':
             moveState.backward = true;
+            break;
+        case 'A':
+        case 'a':
+            moveState.left = true;
+            break;
+        case 'D':
+        case 'd':
+            moveState.right = true;
+            break;
+        case 'X':
+        case 'x':
+            moveState.up = true;
+            break;
+        case 'Y':
+        case 'y':
+            moveState.down = true;
             break;
     }
 }
@@ -103,13 +123,29 @@ function onKeyDown(event) {
 // Fungsi untuk menghentikan gerakan saat tombol dilepas
 function onKeyUp(event) {
     switch (event.key) {
-        case 'S':
-        case 's':
-            moveState.forward = false;
-            break;
         case 'W':
         case 'w':
+            moveState.forward = false;
+            break;
+        case 'S':
+        case 's':
             moveState.backward = false;
+            break;
+        case 'A':
+        case 'a':
+            moveState.left = false;
+            break;
+        case 'D':
+        case 'd':
+            moveState.right = false;
+            break;
+        case 'X':
+        case 'x':
+            moveState.up = false;
+            break;
+        case 'Y':
+        case 'y':
+            moveState.down = false;
             break;
     }
 }
@@ -122,18 +158,33 @@ function animate() {
     render();
 }
 
-// Fungsi untuk menggerakkan kamera maju atau mundur
+// Fungsi untuk menggerakkan kamera maju, mundur, ke kiri, ke kanan, naik, dan turun
 function moveCamera() {
     const speed = 1; // Kecepatan gerakan kamera
-    const moveDirection = new THREE.Vector3();
+    const moveDirection = new THREE.Vector3(0, 0, 0);
+
     if (moveState.forward) {
-        moveDirection.z = -1;
+        moveDirection.z = -speed;
+    } else if (moveState.backward) {
+        moveDirection.z = speed;
     }
-    if (moveState.backward) {
-        moveDirection.z = 1;
+
+    if (moveState.left) {
+        moveDirection.x = -speed;
+    } else if (moveState.right) {
+        moveDirection.x = speed;
     }
+
+    if (moveState.up) {
+        moveDirection.y = speed;
+    } else if (moveState.down) {
+        moveDirection.y = -speed;
+    }
+
     moveDirection.multiplyScalar(speed);
-    camera.position.add(moveDirection);
+    camera.translateX(moveDirection.x);
+    camera.translateY(moveDirection.y);
+    camera.translateZ(moveDirection.z);
 }
 
 function render() {
