@@ -1,0 +1,15 @@
+{
+  "name": "3dthreejs-custom",
+  "version": "1.0.0",
+  "description": "Make a 3D Object using Three JS to complete Graphic Computer Task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.157.0"
+  }
+}
