@@ -3,7 +3,7 @@ import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import { MapControls } from 'three/addons/controls/MapControls.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-let camera, mapControls, orbitControls, scene, renderer;
+let camera, mapControls, orbitControls, scene, renderer, dirLight1, dirLight2;
 
 // Tambahkan variabel untuk mengontrol gerakan maju, mundur, ke kiri, ke kanan, naik, dan turun
 const moveState = {
@@ -14,6 +14,8 @@ const moveState = {
     up: false,
     down: false,
 };
+
+let lightAngle = 0;
 
 init();
 animate();
@@ -62,11 +64,11 @@ function init() {
         scene.add(mesh);
     }
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
+    dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
     dirLight1.position.set(1, 1, 1);
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0x002288, 3);
+    dirLight2 = new THREE.DirectionalLight(0x002288, 3);
     dirLight2.position.set(-1, -1, -1);
     scene.add(dirLight2);
 
@@ -78,6 +80,9 @@ function init() {
     // Tambahkan event listener untuk mengendalikan gerakan maju, mundur, ke kiri, ke kanan, naik, dan turun
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
+
+    // Tambahkan event listener untuk mengubah arah pencahayaan dengan tombol "Q"
+    window.addEventListener('keydown', onLightDirectionChange);
 
     const gui = new GUI();
     gui.add(mapControls, 'zoomToCursor');
@@ -147,6 +152,15 @@ function onKeyUp(event) {
         case 'y':
             moveState.down = false;
             break;
+    }
+}
+
+// Fungsi untuk mengubah arah pencahayaan saat tombol "Q" ditekan
+function onLightDirectionChange(event) {
+    if (event.key === 'Q' || event.key === 'q') {
+        lightAngle += 5; // Menggeser arah pencahayaan sebesar 5 derajat setiap kali tombol "Q" ditekan
+        dirLight1.position.setFromSphericalCoords(1, Math.PI / 2 - THREE.MathUtils.degToRad(lightAngle), Math.PI / 2);
+        dirLight2.position.setFromSphericalCoords(1, Math.PI / 2 - THREE.MathUtils.degToRad(lightAngle), Math.PI / 2);
     }
 }
 
