@@ -47,26 +47,30 @@ function init() {
     orbitControls.enableDamping = true;
     orbitControls.dampingFactor = 0.05;
 
-    // const geometry = new THREE.BoxGeometry();
-    // geometry.translate(0, 0.5, 0);
+    const geometry = new THREE.TorusGeometry()
+    geometry.translate(0, 0.5, 0);
     // const material = new THREE.MeshPhongMaterial({ color: 0xeeeeee, flatShading: true });
 
-    const geometries = [
-        new THREE.BoxGeometry(),
-        // new THREE.SphereGeometry(),
-        // new THREE.CylinderGeometry(),
-        // new THREE.ConeGeometry(),
-    ];
-    const material = new THREE.MeshPhongMaterial({ color: 0xeeeeee, flatShading: true });
+    //const geometries = [
+    //new THREE.TorusGeometry()
+    //new THREE.BoxGeometry(),
+    // new THREE.SphereGeometry(),
+    // new THREE.CylinderGeometry(),
+    // new THREE.ConeGeometry(),
+    //];
+
+
+    // const texture = new THREE.TextureLoader().load('textures/donut.png');
+    const material = new THREE.MeshPhongMaterial({ color: 0xcccccc, flatShading: true });
 
     for (let i = 0; i < 500; i++) {
-        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+        // const geometry = geometries[Math.floor(Math.random() * geometries.length)];
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = Math.random() * 1600 - 800;
         mesh.position.y = 0;
         mesh.position.z = Math.random() * 1600 - 800;
         mesh.scale.x = 20;
-        mesh.scale.y = Math.random() * 80 + 10;
+        mesh.scale.y = 20;
         mesh.scale.z = 20;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
@@ -78,9 +82,9 @@ function init() {
     dirLight1.position.set(1, 1, 1);
     scene.add(dirLight1);
 
-    dirLight2 = new THREE.DirectionalLight(0x002288, 3);
-    dirLight2.position.set(-1, -1, -1);
-    scene.add(dirLight2);
+    // dirLight2 = new THREE.DirectionalLight(0x002288, 3);
+    // dirLight2.position.set(-1, -1, -1);
+    // scene.add(dirLight2);
 
     const ambientLight = new THREE.AmbientLight(0x555555);
     scene.add(ambientLight);
