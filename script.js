@@ -47,11 +47,20 @@ function init() {
     orbitControls.enableDamping = true;
     orbitControls.dampingFactor = 0.05;
 
-    const geometry = new THREE.BoxGeometry();
-    geometry.translate(0, 0.5, 0);
+    // const geometry = new THREE.BoxGeometry();
+    // geometry.translate(0, 0.5, 0);
+    // const material = new THREE.MeshPhongMaterial({ color: 0xeeeeee, flatShading: true });
+
+    const geometries = [
+        new THREE.BoxGeometry(),
+        // new THREE.SphereGeometry(),
+        // new THREE.CylinderGeometry(),
+        // new THREE.ConeGeometry(),
+    ];
     const material = new THREE.MeshPhongMaterial({ color: 0xeeeeee, flatShading: true });
 
     for (let i = 0; i < 500; i++) {
+        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.x = Math.random() * 1600 - 800;
         mesh.position.y = 0;
@@ -63,6 +72,7 @@ function init() {
         mesh.matrixAutoUpdate = false;
         scene.add(mesh);
     }
+
 
     dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
     dirLight1.position.set(1, 1, 1);
